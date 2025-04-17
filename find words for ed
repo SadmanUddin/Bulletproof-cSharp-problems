@@ -1,0 +1,45 @@
+using System;
+using System.IO;
+
+class Program
+{
+    static void Main()
+    {
+        try
+        {
+            string file = Console.ReadLine();
+            string chars = Console.ReadLine().ToLower();
+            int len;
+
+            try { len = int.Parse(Console.ReadLine()); }
+            catch (FormatException) { Console.WriteLine("converting problem"); return; }
+            catch (OverflowException) { Console.WriteLine("too big for this type"); return; }
+
+            if (!File.Exists(file)) { Console.WriteLine("file not found"); return; }
+
+            string[] w = File.ReadAllText(file).ToLower().Split(new char[] { ' ', '\n', '\r', '.', ',', '!', '?', '-', '_', '"', '\'', ':', ';', '(', ')', '[', ']' }, StringSplitOptions.RemoveEmptyEntries);
+            string output = "";
+            string used = " ";
+
+            for (int i = 0; i < w.Length; i++)
+            {
+                string word = w[i];
+                if (word.Length != len || used.Contains(" " + word + " ")) continue;
+
+                bool valid = true;
+                for (int j = 0; j < word.Length; j++) if (!char.IsLetter(word[j])) { valid = false; break; }
+                for (int j = 0; j < chars.Length; j++) if (!word.Contains(chars[j])) { valid = false; break; }
+
+                if (valid)
+                {
+                    output += word + " ";
+                    used += word + " ";
+                }
+            }
+
+            Console.WriteLine(output.Trim());
+        }
+        catch (FileNotFoundException) { Console.WriteLine("file not found"); }
+        catch { Console.WriteLine("crazy input"); }
+    }
+}
