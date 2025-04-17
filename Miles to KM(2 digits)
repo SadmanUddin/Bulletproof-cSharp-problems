@@ -1,0 +1,31 @@
+using System;
+namespace sadman
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            try
+            {
+                string A = Console.ReadLine();
+                double X = Convert.ToDouble(A);
+
+                if(X < 0)
+                {
+                    Console.WriteLine("crazy input");
+                    return;
+                }
+
+                double KM = X*1.609344;
+
+                KM = Math.Round(KM, 2);
+
+                Console.WriteLine(KM + " KM");
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("converting problem");
+            }
+        }
+    }
+}
