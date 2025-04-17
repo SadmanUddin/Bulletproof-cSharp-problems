@@ -1,0 +1,105 @@
+using System;
+
+namespace sadman
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string[] dims = Console.ReadLine().Split();
+
+            if (dims.Length != 2 || !dims[0].Contains("x") || !dims[1].Contains("x"))
+            {
+                Console.WriteLine("converting problem");
+                return;
+            }
+
+            string[] dimA = dims[0].Split('x');
+            string[] dimB = dims[1].Split('x');
+
+            if (!int.TryParse(dimA[0], out int rowa) ||
+                !int.TryParse(dimA[1], out int cola) ||
+                !int.TryParse(dimB[0], out int rowb) ||
+                !int.TryParse(dimB[1], out int colb))
+            {
+                Console.WriteLine("converting problem");
+                return;
+            }
+
+            if (cola != rowb)
+            {
+                Console.WriteLine("wrong dimensions");
+                return;
+            }
+
+            int[,] matrixA = new int[rowa, cola];
+            int[,] matrixB = new int[rowb, colb];
+            int[,] result = new int[rowa, colb];
+
+            for (int i = 0; i < rowa; i++)
+            {
+                for (int j = 0; j < cola; j++)
+                {
+                    string input = Console.ReadLine();
+                    if (!int.TryParse(input, out matrixA[i, j]))
+                    {
+                        Console.WriteLine("converting problem");
+                        return;
+                    }
+                }
+            }
+
+            for (int i = 0; i < rowb; i++)
+            {
+                string[] line = Console.ReadLine().Split();
+                if (line.Length != colb)
+                {
+                    Console.WriteLine("index out of range");
+                    return;
+                }
+
+                for (int j = 0; j < colb; j++)
+                {
+                    if (!int.TryParse(line[j], out matrixB[i, j]))
+                    {
+                        Console.WriteLine("converting problem");
+                        return;
+                    }
+                }
+            }
+
+            for (int i = 0; i < rowa; i++)
+            {
+                for (int j = 0; j < colb; j++)
+                {
+                    int sum = 0;
+                    for (int k = 0; k < cola; k++)
+                    {
+                        try
+                        {
+                            checked
+                            {
+                                sum += matrixA[i, k] * matrixB[k, j];
+                            }
+                        }
+                        catch (OverflowException)
+                        {
+                            Console.WriteLine("too big for this type");
+                            return;
+                        }
+                    }
+                    result[i, j] = sum;
+                }
+            }
+
+            for (int i = 0; i < rowa; i++)
+            {
+                for (int j = 0; j < colb; j++)
+                {
+                    Console.Write(result[i, j] + " ");
+                }
+                Console.WriteLine();
+            }
+        }
+    }
+}
