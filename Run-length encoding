@@ -1,0 +1,46 @@
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        try
+        {
+            string a = Console.ReadLine();
+            string result = "";
+            int count = 1;
+            foreach (char c in a)
+            {
+                if (!char.IsLetter(c))
+                    throw new Exception();
+            }
+
+            for (int i = 1; i < a.Length; i++)
+            {
+                if (a[i] == a[i - 1])
+                {
+                    checked { count++; }
+                }
+                else
+                {
+                    if (count == 1)
+                        result += a[i - 1];
+                    else
+                        result += count.ToString() + a[i - 1];
+
+                    count = 1;
+                }
+            }
+            if (count == 1)
+                result += a[a.Length - 1];
+            else
+                result += count.ToString() + a[a.Length - 1];
+
+            Console.WriteLine(result);
+        }
+        catch
+        {
+            Console.WriteLine("crazy input");
+        }
+    }
+}
